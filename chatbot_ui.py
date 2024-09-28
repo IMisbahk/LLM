@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from main import get_response  # Ensure you import the get_response function
+from main import load_vocab
 
 class ChatbotUI:
     def __init__(self, root, model, tokenizer):
@@ -44,7 +45,7 @@ class ChatbotUI:
         if user_message.strip():
             self.display_message(f"You: {user_message}", align="right")
 
-            response = get_response(user_message, self.tokenizer, self.model)  # Pass tokenizer and model
+            response = get_response(user_message, self.tokenizer, self.model)  # Call the response function
             self.display_message(f"Bot: {response}", align="left")
 
             self.user_input.delete(0, tk.END)
@@ -65,10 +66,9 @@ class ChatbotUI:
 if __name__ == "__main__":
     import torch
     from models.transformer_model import TransformerModel
-    from utils.tokenizer import SimpleTokenizer
+    from data.tokenizer import SimpleTokenizer
 
-    # Load or define vocabulary and initialize tokenizer and model
-    vocab = ['<pad>', '<unk>', 'hello', 'world', 'this', 'is', 'a', 'test']
+    vocab = load_vocab('data/dataset.txt')  # Path to your dataset
     vocab_size = len(vocab)
     tokenizer = SimpleTokenizer(vocab)
     model = TransformerModel(vocab_size)

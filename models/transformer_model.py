@@ -2,15 +2,15 @@ import torch
 import torch.nn as nn
 
 class TransformerModel(nn.Module):
-    def __init__(self, vocab_size, d_model=512, nhead=8, num_encoder_layers=6, num_decoder_layers=6):
+    def __init__(self, vocab_size, embed_size=512, num_heads=8, num_layers=6, ff_hidden_dim=2048):
         super(TransformerModel, self).__init__()
-        self.embedding = nn.Embedding(vocab_size, d_model)
-        self.transformer = nn.Transformer(d_model, nhead, num_encoder_layers, num_decoder_layers)
-        self.fc_out = nn.Linear(d_model, vocab_size)
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+        encoder_layer = nn.TransformerEncoderLayer(embed_size, num_heads, ff_hidden_dim)
+        self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers)
+        self.fc = nn.Linear(embed_size, vocab_size)
 
     def forward(self, x):
-        x = self.embedding(x)  # Shape: (batch_size, seq_length, d_model)
-        x = x.permute(1, 0, 2)  # Transformer expects shape (seq_length, batch_size, d_model)
-        x = self.transformer(x, x)
-        x = x.permute(1, 0, 2)  # Shape: (batch_size, seq_length, d_model)
-        return self.fc_out(x)
+        embedded = self.embedding(x) * (x.size(1) ** 0.5)  # Embedding scaling
+        transformer_output = self.transformer_encoder(embedded)
+        output = self.fc(transformer_output)
+        return output
