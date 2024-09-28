@@ -1,29 +1,30 @@
 # main.py
 import torch
-from models.transformer_model import TransformerModel
+import torch.nn as nn
+from models.simple_language_model import SimpleLanguageModel
 from utils.tokenizer import SimpleTokenizer
 
 # Load or define vocabulary
 vocab = ['<pad>', '<unk>', 'hello', 'world', 'this', 'is', 'a', 'test']
 vocab_size = len(vocab)
+embedding_dim = 100  # Adjust as necessary
+hidden_dim = 128  # Adjust as necessary
 
 # Initialize tokenizer and model
 tokenizer = SimpleTokenizer(vocab)
-model = TransformerModel(vocab_size)
+model = SimpleLanguageModel(vocab_size, embedding_dim, hidden_dim)
+optimizer = torch.optim.Adam(model.parameters())
+criterion = nn.CrossEntropyLoss()
 
-# Sample input text
-input_text = "hello world this is a test"
+# Function to train the model (use later in the UI)
+def train_model(model, inputs, targets, optimizer, criterion):
+    model.train()
+    optimizer.zero_grad()
+    output = model(inputs)
+    loss = criterion(output, targets)
+    loss.backward()
+    optimizer.step()
+    return loss.item()
 
-# Tokenize input
-input_tokens = tokenizer.tokenize(input_text).unsqueeze(0)  # Add batch dimension
-
-# Run the model
-with torch.no_grad():  # Disable gradient calculation for inference
-    output = model(input_tokens)
-
-# Print output (convert tokens back to words)
-predicted_tokens = output.argmax(dim=-1).squeeze(0)  # Get the highest probability tokens
-output_text = tokenizer.detokenize(predicted_tokens.tolist())
-
-print("Input:", input_text)
-print("Output:", output_text)
+# Placeholder for training or other functionalities if needed
+# Keep this file modular; actual chatbot functionality will be handled in chatbot_ui.py
