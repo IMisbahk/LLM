@@ -3,11 +3,14 @@ from tkinter import scrolledtext
 from main import get_response  # Ensure you import the get_response function
 
 class ChatbotUI:
-    def __init__(self, root):
+    def __init__(self, root, model, tokenizer):
         self.root = root
         self.root.title("Chatbot")
         self.root.geometry("800x600")
         self.root.configure(bg="#121212") 
+
+        self.model = model
+        self.tokenizer = tokenizer
 
         self.chat_frame = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, state="disabled", padx=10, pady=10)
         self.chat_frame.config(bg="#1E1E1E", font=("Helvetica", 12), fg="white")
@@ -41,10 +44,10 @@ class ChatbotUI:
         if user_message.strip():
             self.display_message(f"You: {user_message}", align="right")
 
-        response = get_response(user_message)  # Call the response function
-        self.display_message(f"Bot: {response}", align="left")
+            response = get_response(user_message, self.tokenizer, self.model)  # Pass tokenizer and model
+            self.display_message(f"Bot: {response}", align="left")
 
-        self.user_input.delete(0, tk.END)
+            self.user_input.delete(0, tk.END)
 
     def display_message(self, message, align="left"):
         self.chat_frame.config(state="normal")
@@ -60,6 +63,16 @@ class ChatbotUI:
         self.chat_frame.see(tk.END)
 
 if __name__ == "__main__":
+    import torch
+    from models.transformer_model import TransformerModel
+    from utils.tokenizer import SimpleTokenizer
+
+    # Load or define vocabulary and initialize tokenizer and model
+    vocab = ['<pad>', '<unk>', 'hello', 'world', 'this', 'is', 'a', 'test']
+    vocab_size = len(vocab)
+    tokenizer = SimpleTokenizer(vocab)
+    model = TransformerModel(vocab_size)
+
     root = tk.Tk()
-    app = ChatbotUI(root)
+    app = ChatbotUI(root, model, tokenizer)  # Pass model and tokenizer here
     root.mainloop()
