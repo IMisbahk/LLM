@@ -25,7 +25,6 @@ class ChatbotUI:
         self.user_input.pack(fill=tk.X, padx=10, pady=10, ipady=8, side=tk.LEFT, expand=True)
         self.user_input.bind("<Return>", self.handle_message)
 
-        # Configure the input box for gradient effect
         self.user_input.config(highlightthickness=2, highlightbackground="#5DA3FA", highlightcolor="#00FF00")
         self.user_input.bind("<FocusIn>", self.on_focus_in)
         self.user_input.bind("<FocusOut>", self.on_focus_out)
@@ -45,7 +44,7 @@ class ChatbotUI:
         if user_message.strip():
             self.display_message(f"You: {user_message}", align="right")
 
-            response = get_response(user_message, self.tokenizer, self.model)  # Call the response function
+            response = get_response(user_message, self.tokenizer, self.model) 
             self.display_message(f"Bot: {response}", align="left")
 
             self.user_input.delete(0, tk.END)
@@ -68,11 +67,11 @@ if __name__ == "__main__":
     from models.transformer_model import TransformerModel
     from data.tokenizer import SimpleTokenizer
 
-    vocab = load_vocab('data/dataset.txt')  # Path to your dataset
+    vocab = load_vocab('data/dataset.txt')  
     vocab_size = len(vocab)
     tokenizer = SimpleTokenizer(vocab)
     model = TransformerModel(vocab_size)
 
-    root = tk.Tk()
-    app = ChatbotUI(root, model, tokenizer)  # Pass model and tokenizer here
+    root = tk.Tk()#
+    app = ChatbotUI(root, model, tokenizer)   
     root.mainloop()

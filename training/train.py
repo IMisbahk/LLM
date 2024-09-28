@@ -2,8 +2,8 @@ import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-def train(model, dataset, epochs=10, batch_size=32):
-    model.train()  # Set the model to training mode
+def train(model, dataset, epochs=100, batch_size=32):
+    model.train() 
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     criterion = torch.nn.CrossEntropyLoss()
@@ -14,7 +14,7 @@ def train(model, dataset, epochs=10, batch_size=32):
             optimizer.zero_grad()
             outputs = model(inputs)
 
-            # Reshape outputs and targets for loss computation
+          
             loss = criterion(outputs.view(-1, outputs.size(-1)), inputs.view(-1))
             loss.backward()
             optimizer.step()

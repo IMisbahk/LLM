@@ -10,9 +10,9 @@ class SimpleRNN(nn.Module):
         self.fc = nn.Linear(hidden_dim, vocab_size)
 
     def forward(self, x):
-        # x: (batch_size, sequence_length)
-        embedded = self.embedding(x)  # (batch_size, sequence_length, embedding_dim)
-        output, hidden = self.rnn(embedded)  # (batch_size, sequence_length, hidden_dim)
-        # Use the output from the last time step
-        output = self.fc(output[:, -1, :])  # (batch_size, vocab_size)
+       
+        embedded = self.embedding(x)  
+        output, hidden = self.rnn(embedded)  
+      
+        output = self.fc(output[:, -1, :]) 
         return output

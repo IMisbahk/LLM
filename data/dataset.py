@@ -15,7 +15,6 @@ class TextDataset(Dataset):
         text = self.data[idx].strip()
         tokens = self.tokenize(text)
 
-        # Pad the token list
         if len(tokens) < self.max_length:
             tokens += [self.tokenizer.vocab.index('<pad>')] * (self.max_length - len(tokens))
         else:

@@ -10,7 +10,7 @@ class TransformerModel(nn.Module):
         self.fc = nn.Linear(embed_size, vocab_size)
 
     def forward(self, x):
-        embedded = self.embedding(x) * (x.size(1) ** 0.5)  # Embedding scaling
+        embedded = self.embedding(x) * (x.size(1) ** 0.5) 
         transformer_output = self.transformer_encoder(embedded)
         output = self.fc(transformer_output)
         return output

@@ -2,26 +2,23 @@ import torch
 from torch.utils.data import DataLoader
 from models.transformer_model import TransformerModel
 from data.tokenizer import SimpleTokenizer
-from data.dataset import TextDataset  # Assuming this is your dataset class
+from data.dataset import TextDataset  
 from main import load_vocab
-# Load vocab and initialize tokenizer
-vocab = load_vocab('data/dataset.txt')  # Make sure the path is correct
+
+vocab = load_vocab('data/dataset.txt') 
 vocab_size = len(vocab)
 tokenizer = SimpleTokenizer(vocab)
 
-# Initialize the dataset and dataloader
 dataset = TextDataset('data/dataset.txt', tokenizer)
-batch_size = 32  # Define your batch size
+batch_size = 32 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
 
-# Initialize your model
 model = TransformerModel(vocab_size)
-model.eval()  # Set the model to evaluation mode
+model.eval() 
 
 def evaluate_model(model, dataloader):
     total_loss = 0
-    criterion = torch.nn.CrossEntropyLoss()  # Define loss function
-
+    criterion = torch.nn.CrossEntropyLoss()  
     for inputs in dataloader:
         with torch.no_grad():
             outputs = model(inputs)
