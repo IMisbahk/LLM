@@ -14,8 +14,15 @@ class TransformerModel(nn.Module):
         self.fc_out = nn.Linear(d_model, vocab_size)
 
     def forward(self, src):
-        seq_len = src.size(1)
-        src += self.positional_encoding[:seq_len, :]
+        seq_len = src.size(1)  # Number of tokens in the input sequence
+        batch_size = src.size(0)  # Number of sequences in the batch
+        
+        # Ensure the positional encoding has the correct shape
+        pos_enc = self.positional_encoding[:seq_len, :].unsqueeze(0).expand(batch_size, -1, -1)
+
+        src = self.embedding(src)  # Embed the input tokens
+        src += pos_enc  # Add positional encoding
+
         output = self.transformer_encoder(src)
         output = self.fc_out(output)
         return output
