@@ -2,13 +2,10 @@ import re
 import string
 
 def clean_text(text):
-    # Convert text to lowercase
     text = text.lower()
 
-    # Remove punctuation
     text = text.translate(str.maketrans("", "", string.punctuation))
 
-    # Remove extra spaces and newlines
     text = re.sub(r'\s+', ' ', text).strip()
 
     return text
