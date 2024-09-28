@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext
+from main import get_response  # Ensure you import the get_response function
 
 class ChatbotUI:
     def __init__(self, root):
@@ -40,13 +41,10 @@ class ChatbotUI:
         if user_message.strip():
             self.display_message(f"You: {user_message}", align="right")
 
-        response = self.get_response(user_message)
+        response = get_response(user_message)  # Call the response function
         self.display_message(f"Bot: {response}", align="left")
 
         self.user_input.delete(0, tk.END)
-
-    def get_response(self, message):
-        return "This is a placeholder response."
 
     def display_message(self, message, align="left"):
         self.chat_frame.config(state="normal")
