@@ -2,7 +2,7 @@ import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-def train(model, dataset, epochs=100, batch_size=32):
+def train(model, dataset, epochs=100, batch_size=128):
     model.train() 
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     optimizer = optim.Adam(model.parameters(), lr=1e-3)

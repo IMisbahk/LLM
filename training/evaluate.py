@@ -10,7 +10,7 @@ vocab_size = len(vocab)
 tokenizer = SimpleTokenizer(vocab)
 
 dataset = TextDataset('data/dataset.txt', tokenizer)
-batch_size = 32 
+batch_size = 128
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
 
 model = TransformerModel(vocab_size)
