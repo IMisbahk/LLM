@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext
-from main import get_response  # Ensure you import the get_response function
+from main import get_response  
 from main import load_vocab
 
 class ChatbotUI:
